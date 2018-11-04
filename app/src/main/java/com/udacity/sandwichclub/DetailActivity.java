@@ -1,15 +1,11 @@
 package com.udacity.sandwichclub;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +13,13 @@ import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
-import java.util.Arrays;
-
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
+    private static final String DISPLAY_DELIMITER = " | ";
 
     private ImageView mIngredientsImageView;
     private TextView mDescriptionTextView;
@@ -89,18 +84,13 @@ public class DetailActivity extends AppCompatActivity {
         if (sandwich.getAlsoKnownAs().size() == 0) {
             mAlsoKnownAsTextView.setText(R.string.detail_default_value);
         } else {
-            for (String alsoKnownAs : sandwich.getAlsoKnownAs()) {
-                mAlsoKnownAsTextView.append(" " + alsoKnownAs + " |");
-                mAlsoKnownAsTextView.setMovementMethod(new ScrollingMovementMethod());
-            }
+            mAlsoKnownAsTextView.setText(TextUtils.join(DISPLAY_DELIMITER, sandwich.getAlsoKnownAs()));
         }
 
         if (sandwich.getIngredients().size() == 0) {
             mIngredientsTextView.setText(R.string.detail_default_value);
         } else {
-            for (String ingredient : sandwich.getIngredients()) {
-                mIngredientsTextView.append(" " + ingredient + " |");
-            }
+            mIngredientsTextView.setText(TextUtils.join(DISPLAY_DELIMITER, sandwich.getIngredients()));
         }
 
         mDescriptionTextView.setText(sandwich.getDescription());
